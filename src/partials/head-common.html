@@ -1,0 +1,88 @@
+{% set NO_INDEX = absolute_url is string_containing 'hs-sites.com' %}
+{% set MAINTENANCE_MODE = false %}
+
+{% module "global_site_settings" path="/mag-hs/modules/global-site-settings", label="Global Settings", export_to_template_context=true %}
+
+<meta charset="utf-8">
+
+{%- if page_meta.html_title or pageTitle -%}
+  {%- if blog_author -%}
+    {% set teamMemberRows = hubdb_table_rows('team_members', 'author_slug__eq=' + blog_author.slug) %}
+    {% set authorTitle = teamMemberRows[0].job_title if teamMemberRows | length > 0 else 'team member'  %}
+    {% set archivePageTitle %}
+      Articles authored by {{blog_author.display_name}}, {{authorTitle}} at MAGNETIC
+    {% endset %}
+  {%- endif -%}
+  {%- if topic -%}
+    {% set allBlogTags = blog_tags(85105331267, 250) %}
+    {% set tagMatch = [] %}
+    {% for tag in allBlogTags %}
+      {% if tag.slug == topic %}
+        {% do tagMatch.append(tag) %}
+      {% endif %}
+    {% endfor %}
+    {% if tagMatch | length > 0 %}
+      {% set tagName = tagMatch[0].name %}
+      {%- set archivePageTitle -%}
+        {{tagName}} insights brought to you by the {{tagName}} experts at MAGNETIC
+      {%- endset -%}
+      {%- set archiveDescription -%}
+        Whether you're just getting started with {{tagName}} or are looking for deep {{tagName}} insights, these articles are sure to bring you fresh {{tagName}} perspectives.
+      {%- endset -%}
+    {% endif %}
+  {%- endif -%}
+  <title>{{ archivePageTitle or page_meta.html_title or pageTitle }}</title>
+{%- endif -%}
+
+<meta name="description" content="{{ archiveDescription or page_meta.meta_description }}">
+
+<link rel="dns-prefetch" href="https://js.hs-analytics.net">
+<link rel="dns-prefetch" href="https://api.hubapi.com">
+<link rel="dns-prefetch" href="https://static.hsappstatic.net">
+<link rel="dns-prefetch" href="https://cdn2.hubspot.net">
+<link rel="dns-prefetch" href="https://api.hubspot.net">
+<link rel="dns-prefetch" href="https://app.hubspot.net">
+<link rel="dns-prefetch" href="https://www.googletagmanager.com">
+<link rel="dns-prefetch" href="https://www.google-analytics.com">
+
+{%- if site_settings.favicon_src -%}
+  <link rel="shortcut icon" href="{{ site_settings.favicon_src }}" />
+{%- endif -%}
+
+{%- if NO_INDEX -%}
+  <meta name="robots" content="nofollow, noindex" />
+{%- endif -%}
+
+<meta name="theme-color" content="#232323" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="description" content="{{ page_meta.meta_description }}">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+
+{{ standard_header_includes
+  | cut("<script src=\"https://static.hsappstatic.net/jquery-libs/static-1.4/jquery/jquery-1.11.2.js\"></script>")
+  | cut("<script src=\"/hs/hsstatic/jquery-libs/static-1.4/jquery/jquery-1.11.2.js\"></script>")
+  | cut("<script>hsjQuery = window['jQuery'];</script>")
+  | cut("{{ include_default_custom_css(content.include_default_custom_css, template_meta.include_default_custom_css, domain_settings.include_default_custom_css) }}")
+  | cut("{{ include_attached_css(content_group.attached_stylesheets or domain_settings.attached_stylesheets, content.enable_domain_stylesheets, template_meta.enable_domain_stylesheets, theme_meta.enable_domain_stylesheets, domain_settings.enable_domain_stylesheets) }}")
+  | cut("{{ include_attached_css(template_meta.attached_stylesheets, content.enable_layout_stylesheets) }}")
+  | cut("{{ include_attached_css(content.attached_stylesheets) }}")
+  | cut("{{ require_attached_js(template_meta.attached_js) }}")
+}}
+
+{# Enable view transitions in QA, enable in prod if no issues are discovered #}
+{%- if NO_INDEX -%}
+<meta name="view-transition" content="same-origin" />
+<style>
+  ::view-transition-old(root) {
+    animation: viewTransitionFade 0.5s linear reverse;
+  }
+  ::view-transition-new(root) {
+    animation: viewTransitionFade 0.5s linear forwards;
+  }
+  @keyframes viewTransitionFade {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+</style>
+{%- endif -%}

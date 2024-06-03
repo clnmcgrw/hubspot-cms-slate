@@ -1,0 +1,34 @@
+[
+  {
+    "label": "Theme Options",
+    "name": "options",
+    "type": "group",
+    "children": [
+      {
+        "label": "Brand Color",
+        "inline_help_text": "Primary brand color (used for system settings)",
+        "name": "brand_color",
+        "type": "color",
+        "visibility": {
+          "hidden_subfields": {
+            "opacity": true
+          }
+        },
+        "inherited_value": {
+          "property_value_paths": {
+            "color": "brandSettings.primaryColor"
+          }
+        },
+        "default": {
+          "color": "#494A52"
+        }
+      },
+      {
+        "label": "Smooth Page Scroll",
+        "inline_help_text": "Enable smooth scroll effect for all pages",
+        "name": "smooth_scroll",
+        "type": "boolean"
+      }
+    ]
+  }
+]

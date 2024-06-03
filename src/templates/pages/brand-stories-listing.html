@@ -1,0 +1,14 @@
+<!--
+  templateType: page
+  isAvailableForNewContent: true
+  label: Brand Stories Listing
+!-->
+
+{% set BODY_CLASS = 'bs-listing' %}
+
+{% extends "mag-hs/templates/layouts/smooth-scroll.html" %}
+
+{% block body %}
+  {% module "bs_hero" path="/mag-hs/modules/brand-stories-hero", label="Brand Stories Hero", no_wrapper=true %}
+  {% module "bs_body" path="/mag-hs/modules/brand-stories-body", label="Brand Stories Body", no_wrapper=true %}
+{% endblock body %}

@@ -1,0 +1,158 @@
+<!--
+  templateType: blog_listing
+  isAvailableForNewContent: true
+  label: MAG Blog Listing
+-->
+{% extends "mag-hs/templates/layouts/blog-layout.html" %}
+
+{% include '/mag-hs/macros/blog/blog-sticky-bar.html' %}
+{% include '/mag-hs/macros/blog/blog-sidebar.html' %}
+{% include '/mag-hs/macros/blog/svg-magnetic.html' %}
+{% include '/mag-hs/macros/blog/svg-magnetic-compact.html' %}
+
+{% set blog_id = 85105331267 %}
+{% set all_categories = ['agency', 'branding', 'creative', 'growth'] %}
+{% set path_pieces = request.path | split('/') %}
+{% set category_from_path = path_pieces | last %}
+
+{% set posts_by_category = blog_recent_tag_posts(blog_id, category_from_path) %}
+{% set posts = category_from_path in all_categories ? posts_by_category : contents %}
+
+{% block body %}
+{% module "module_16632884565601" path="/mag-hs/modules/blog/2022 Blog Listing Hero", label="2022 Blog Listing Hero" %}
+
+<div class="mc-post-body-parent">
+{{ blog_sticky_bar(false, all_categories, category_from_path) }}
+
+<div class="mag-blog-listing__postlist" id="mag-postslist">
+  <div class="mag-container mag-container--lg">
+    <div class="mag-blog-listing__posts">
+      {% set enable_author_section = true %}
+      {% set enable_author_slugs = ['trey-evans', 'matt-simpson'] %}
+      {% if blog_author and enable_author_slugs is containing blog_author.slug  %}
+        <div class="mag-author-archive">
+          <div class="mag-author-archive--avatar"
+            style="background-image:url('{{blog_author.avatar}}');"></div>
+          <div class="mag-author-archive--byline">
+            <h2>
+              {% set authorPostCount = contents | length %}
+              {% set authorPostFix = 'Post' if authorPostCount == 1 else 'Posts' %}
+              <span>{{contents | length}} {{authorPostFix}} Authored By:</span>
+              <span>{{blog_author.full_name}}</span>
+            </h2>
+            {% if blog_author.website or blog_author.email or blog_author.linkedin or blog_author.facebook or blog_author.twitter %}
+            <div class="mag-author-archive--links">
+              {% if blog_author.website %}
+              <a href="{{blog_author.website}}">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-globe">
+                  <circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
+              </a>
+              {% endif %}
+              {% if blog_author.email %}
+              <a href="mailto:{{blog_author.email}}">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-mail">
+                  <rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+              </a>
+              {% endif %}
+              {% if blog_author.linkedin %}
+              <a href="{{blog_author.linkedin}}">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-linkedin">
+                  <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></svg>
+              </a>
+              {% endif %}
+              {% if blog_author.facebook %}
+              <a href="{{blog_author.facebook}}">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-facebook">
+                  <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+              </a>
+              {% endif %}
+              {% if blog_author.twitter %}
+              <a href="{{blog_author.twitter}}">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-twitter">
+                  <path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"/></svg>
+              </a>
+              {% endif %}
+            </div>
+            {% endif %}
+            {% if blog_author.bio %}
+            <p>{{blog_author.bio}}</p>
+            {% endif %}
+          </div>
+        </div>
+      {% endif %}
+      {% for post in contents %}
+        {% set url = post.url %}
+        {% set featured_image_thumbnail = post.widgets.featured_image_thumbnail.body.src %}
+        {% set alt_text = post.widgets.featured_image_thumbnail.body.alt %}
+        {% set category = post.topic_names | first %}
+        {% set publish_date = post.publish_date | datetimeformat('%d / %B %Y') | replace('0', 'O') %}
+        {% set post_author_name = post.blog_author.display_name %}
+        {% set title = post.title %}
+        {% set description = post.widgets.post_short_description.body.value %}
+        {% set word_count = post.post_body | wordcount %}
+        {% set reading_time = word_count / 200 | round %}
+
+        <div class="mag-blog-listing__post mag-post-preview">
+          <div class="mag-post-preview__image lazy-image">
+            <a href="{{ url }}">
+              <figure>
+                <img data-lazy-src="{{ featured_image_thumbnail }}" alt="{{ alt_text }}">
+              </figure>
+            </a>
+          </div>
+          <div class="mag-post-preview__content">
+            <div class="mag-post-preview__meta">
+              <span>{{ publish_date }} in <a href="{{ blog.absolute_url }}/tag/{{ category | lower }}">{{ category }}</a></span>
+            </div>
+            <a href="{{ url }}">
+              <h3 class="mag-post-preview__title mag-headline mag-headline--sm">{{ title }}</h3>
+            </a>
+            <p class="mag-post-preview__description">{{ description }}</p>
+            <div class="mag-post-preview__misc">
+              <span>by {{ post_author_name }} &mdash; {{ reading_time }} min read</span>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+
+    {{ blog_sidebar() }}
+    
+  </div>
+</div>
+
+<div class="mag-blog-pagination">
+  <div class="mag-container">
+    {% set page_list = [-2, -1, 0, 1, 2] %}
+    {% if contents.total_page_count - current_page_num == 1 %}{% set offset = -1 %}
+    {% elif contents.total_page_count - current_page_num == 0 %}{% set offset = -2 %}
+    {% elif current_page_num == 2 %}{% set offset = 1 %}
+    {% elif current_page_num == 1 %}{% set offset = 2 %}
+    {% else %}{% set offset = 0 %}{% endif %}
+
+    <div class="mag-blog-pagination__left">
+      {% if current_page_num >= 3 %}
+        <a class="first-link" href="{{ blog_page_link(1) }}">❮❮</a>
+      {% endif %}
+      {% if last_page_num %}<a class="prev-link" href="{{ blog_page_link(last_page_num) }}">❮</a>{% endif %}
+    </div>
+
+    <div class="mag-blog-pagination__center">
+      {% for page in page_list %}
+        {% set this_page = current_page_num + page + offset %}
+        {% if this_page > 0 and this_page <= contents.total_page_count %}
+          <a {% if this_page == current_page_num %}class="active"{% endif %} href="{{ blog_page_link(this_page) }}">{{ this_page }}</a>
+        {% endif %}
+      {% endfor %}
+    </div>
+
+    <div class="mag-blog-pagination__right">
+      {% if next_page_num %}<a class="next-link" href="{{ blog_page_link(current_page_num + 1) }}">❯</a>{% endif %}
+      {% if contents.total_page_count - current_page_num >= 2 %}
+        <a class="last-link" href="{{ contents.total_page_count }}">❯❯</a>
+      {% endif %}
+    </div>
+  </div>
+</div>
+</div>
+{% endblock %}

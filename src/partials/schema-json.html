@@ -1,0 +1,14 @@
+{% import 'mag-hs/partials/about-page-data.html' %}
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org/",
+  "@type": "Corporation",
+  "name": "Magnetic Creative, Inc.",
+  "description": "{{ page_meta.meta_description }}",
+  "email": "hello@mag.cr",
+  "url": "https://magneticcreative.com",
+  "logo": "https://ideas.magneticcreative.com/hubfs/2023-web/magnetic-creative-logo.jpeg",
+  "numberOfEmployees": "{{teamMemberData | length}}"
+}
+</script>

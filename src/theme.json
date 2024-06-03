@@ -1,0 +1,51 @@
+{
+  "label": "HubSpot CMS Slate",
+  "author": {
+    "name": "Colin McGraw",
+    "email": "colinmcgraw@me.com",
+    "url": "https://www.colinmcgraw.com/"
+	},
+  "documentation_url": "",
+  "example_url": "",
+  "preview_path": "./templates/home.html",
+  "screenshot_path": "./images/template-previews/home.png",
+  "enable_domain_stylesheets": false,
+  "license": "./license.txt",
+  "responsive_breakpoints": [
+    {
+      "name": "small",
+      "mediaQuery": "@media (max-width: 520px)",
+      "previewWidth": {
+        "value": 520
+      }
+    },
+    {
+      "name": "medium",
+      "mediaQuery": "@media (max-width: 767px)",
+      "previewWidth": {
+        "value": 767
+      }
+    },
+    {
+      "name": "large",
+      "mediaQuery": "@media (max-width: 992px)",
+      "previewWidth": {
+        "value": 992
+      }
+    },
+    {
+      "name": "xlarage",
+      "mediaQuery": "@media (max-width: 1199px)",
+      "previewWidth": {
+        "value": 1199
+      }
+    },
+    {
+      "name": "xxlarage",
+      "mediaQuery": "@media (max-width: 1440px)",
+      "previewWidth": {
+        "value": 1440
+      }
+    }
+  ]
+}

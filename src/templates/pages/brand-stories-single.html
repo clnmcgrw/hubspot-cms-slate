@@ -1,0 +1,31 @@
+<!--
+  templateType: page
+  isAvailableForNewContent: true
+  label: Brand Stories Single
+!-->
+{% import "mag-hs/partials/brand-story-data.html" %}
+
+{% set clientOptions = [] %}
+{% for row in brandStoryData %}
+  {% do clientOptions.append([row.name, row.name]) %}
+{% endfor %}
+{% choice "client" label="Select a Client", value="Fugoo", choices="{{clientOptions}}", no_wrapper=true, export_to_template_context=true %}
+
+{% set pageBodyClass = widget_data.client.value | lower | replace(' ', '-') | replace(', ', '') %}
+{% set BODY_CLASS = 'bs-single bs-single-' + pageBodyClass %}
+
+{% extends "mag-hs/templates/layouts/smooth-scroll.html" %}
+
+{% choice "page_theme" label="Select Color Theme", value="Light", choices="Light, Dark", no_wrapper=true, export_to_template_context=true %}
+
+{% block body %}
+  {% module "bs_hero" path="/mag-hs/modules/brand-stories-hero", label="Brand Stories Hero", page_type="single", no_wrapper=true %}
+  
+  <div class="mc-flexcolumn mc-flexcolumn--{{widget_data.page_theme.value | lower}}">
+  {% widget_container "bs_page_content" label="Page Content", no_wrapper=true %}
+  {% end_widget_container %}
+
+  {% include "mag-hs/partials/brand-story-summary.html" %}
+  {% include "mag-hs/partials/brand-story-next.html" %}
+  </div>
+{% endblock body %}

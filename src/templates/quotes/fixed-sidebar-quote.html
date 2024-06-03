@@ -1,0 +1,123 @@
+<!--
+  templateType: quote
+  isAvailableForNewContent: true
+  label: Quote Template w/ Fixed Sidebar
+-->
+
+<!doctype html>
+<html lang="{{ html_lang }}" {{ html_lang_dir }}>
+  <head>
+    <meta charset="utf-8">
+
+    {% if page_meta.html_title or pageTitle %}
+      <title>{{ page_meta.html_title or pageTitle }}</title>
+    {% endif %}
+
+    {% if site_settings.favicon_src %}
+      <link rel="shortcut icon" href="{{ site_settings.favicon_src }}" />
+    {% endif %}
+
+    <meta name="description" content="{{ page_meta.meta_description }}">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,800;1,400;1,800&display=swap" rel="stylesheet" />
+
+    {{ require_css(get_asset_url('../../assets/quotes.css')) }}
+
+    {# This is intended to be used if a template requires template specific style sheets #}
+    {% if template_css %}
+      {{ require_css(get_asset_url(template_css)) }}
+    {% endif %}
+
+    {{ standard_header_includes }}
+  </head>
+  <body>
+    {# Set debug to print template data #}
+    {% set mcqDebug = false %}
+
+    {# Variables available in quote template #}
+    {% import '../../partials/quotes/mock-line-items.html' as mcqMock %}
+    {% set mcqModuleData = template_data.module_data %}
+    {% set mcqQuote = template_data.quote %}
+    {% set mcqCompanyName = mcqQuote.associated_objects.company.name %}
+    {% set mcqIsSample = mcqCompanyName == 'Sample company' %}
+    {% set mcqLineItems = mcqMock.lineItems if mcqIsSample else mcqQuote.associated_objects.line_items %}
+
+    {# Determines which phases are included in quote, based on line item skus #}
+    {% set mcqPhaseItems = { "b": [], "c": [], "g": [] } %}
+    {% set mcqPhasesArray = ["b", "c", "g"] %}
+    {% for lineItem in mcqLineItems %}
+      {% set skuFirstLetter = lineItem.hs_sku | truncate(1, true, '') %}
+      {% do mcqPhaseItems[skuFirstLetter].append(lineItem) %}
+    {% endfor %}
+
+    {# Sidebar/Header section #}
+    {% module "header" path="/mag-hs/modules/quotes/quote-header", label="Sidebar Header", no_wrapper=true %}
+    
+    {# Main page body #}
+    <main id="mcq-main" class="mcq-main {% if template_data.is_preview %}is-preview{% endif %}" role="main">
+
+      {% module "introduction" path="/mag-hs/modules/quotes/quote-introduction", label="Introduction", no_wrapper=true %}
+
+      {% module "phase_brand"
+         path="/mag-hs/modules/quotes/quote-phase",
+         label="Phase - Brand",
+         phase="b",
+         main_title="Crafting Brands to Grow and Scale",
+         subtitle="Brand Strategy & Management",
+         no_wrapper=true %}
+
+      {% module "phase_creative"
+         path="/mag-hs/modules/quotes/quote-phase",
+         label="Phase - Creative",
+         phase="c",
+         main_title="Manifesting Brand Intelligence Into Powerful Creative Assets",
+         subtitle="Creative Development",
+         no_wrapper=true %}
+
+      {% module "phase_growth"
+         path="/mag-hs/modules/quotes/quote-phase",
+         label="Phase - Growth",
+         phase="g",
+         main_title="Title For the Growth Phase Section",
+         subtitle="Growth",
+         no_wrapper=true %}
+      
+      {% module "timeline"
+         path="/mag-hs/modules/quotes/quote-timeline-investment",
+         label="Timeline / Investment",
+         no_wrapper=true %}
+      
+      {% if mcqDebug %}
+      <section class="mcq-debug">
+        <div class="mcq-inner">
+          <textarea>{{mcqPhases | tojson}}</textarea>
+        </div>
+        <div class="mcq-inner">
+          <textarea>{{mcqLineItems | tojson}}</textarea>
+        </div>
+        <div class="mcq-inner">
+          <textarea>{{template_data | tojson}}</textarea>
+        </div>
+      </section>
+      {% endif %}
+      
+      {% if template_data.is_preview %}
+        <aside class="mcq-preview-alert">
+          <div class="mcq-inner">
+            <p>You are viewing this quote in preview mode 🤙</p>
+            <p></p>
+          </div>
+        </aside>
+      {% endif %}
+    </main>
+
+    <footer class="mcq-footer" role="contentinfo">
+
+    </footer>
+
+    {{ require_js(get_asset_url("../../assets/quotes.js")) }}
+    {{ standard_footer_includes }}
+  </body>
+</html>

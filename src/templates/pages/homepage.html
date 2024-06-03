@@ -1,0 +1,28 @@
+<!--
+  templateType: page
+  isAvailableForNewContent: true
+  label: Homepage
+!-->
+
+{% set BODY_CLASS = 'homepage' %}
+
+{% extends "mag-hs/templates/layouts/smooth-scroll.html" %}
+
+{% block head %}
+  {{ require_css(get_asset_url('mag-hs/assets/home.css')) }}
+{% endblock %}
+
+{% block body %}
+  {% module "home_hero" path="/mag-hs/modules/mag-homepage-hero", label="Hero + Top Section - MAG", no_wrapper=true %}
+  {% module "home_tagline" path="/mag-hs/modules/mag-homepage-tagline", label="Logos Section - MAG", no_wrapper=true %}
+  {% module "home_services" path="/mag-hs/modules/mag-homepage-services", label="Services Section - MAG", no_wrapper=true %}
+  {% module "home_work" path="/mag-hs/modules/mag-homepage-work", label="Featured Work Section - MAG", no_wrapper=true %}
+  {% module "home_stats" path="/mag-hs/modules/mag-homepage-stats", label="Stats Section - MAG", no_wrapper=true %}
+  {% module "home_image" path="/mag-hs/modules/mag-homepage-image", label="Full Width Image Section - MAG", no_wrapper=true %}
+  {% module "home_quotes" path="/mag-hs/modules/mag-homepage-quotes", label="Testimonials Section - MAG", no_wrapper=true %}
+{% endblock body %}
+
+{% block footer %}
+  {{ require_js(get_asset_url('mag-hs/assets/home.js'), { position: 'footer', defer: true, async: true }) }}
+  {% include 'mag-hs/partials/schema-json.html' %}
+{% endblock %}

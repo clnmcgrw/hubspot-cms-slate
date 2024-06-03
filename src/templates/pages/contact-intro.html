@@ -1,0 +1,17 @@
+<!--
+  templateType: page
+  isAvailableForNewContent: true
+  label: Contact Introduction
+!-->
+
+{% set BODY_CLASS = 'contact-intro' %}
+
+{% extends "mag-hs/templates/layouts/smooth-scroll.html" %}
+
+{% block body %}
+<section class="mc-contact mc-contact--intro">
+  <div class="mc-inner">
+    {% include 'mag-hs/partials/contact-intro.html' %}
+  </div>
+</section>
+{% endblock body %}

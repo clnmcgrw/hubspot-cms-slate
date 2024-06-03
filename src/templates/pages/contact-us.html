@@ -1,0 +1,13 @@
+<!--
+  templateType: page
+  isAvailableForNewContent: true
+  label: Contact Page
+!-->
+
+{% set BODY_CLASS = 'contact-page' %}
+
+{% extends "mag-hs/templates/layouts/smooth-scroll.html" %}
+
+{% block body %}
+  {% module "contact_section" path="/mag-hs/modules/mag-contatct-form", label="Contact Form Section", no_wrapper=true %}
+{% endblock body %}

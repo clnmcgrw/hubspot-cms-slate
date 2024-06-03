@@ -1,0 +1,115 @@
+{% import 'mag-hs/macros/icons.html' as icons %}
+{% import 'mag-hs/macros/global-elements.html' as elements %}
+
+{% set mcHeaderBgDefault = 'Dark' if blog else 'Light' %}
+{% choice "header_bg" label="Header/Nav Background Color", value="{{mcHeaderBgDefault}}", choices="Light, Dark", no_wrapper=true, export_to_template_context=true %}
+{% choice "header_text_color" label="Header/Nav Text Color", value="Light", choices="Light, Dark", no_wrapper=true, export_to_template_context=true %}
+
+<header id="mc-header" class="mc-header mc-header--bg-{{widget_data.header_bg.value | lower}} mc-header--text-{{widget_data.header_text_color.value | lower}}">
+  <div class="mc-header--bg"></div>
+  <div class="mc-header--liner">
+
+    <div class="mc-header--menu">
+      <button type="button" id="mc-nav-open" class="mc-textlink mc-textlink--light">
+        <span data-split-text class="mc-textlink--front">Menu</span>
+        <span data-split-text class="mc-textlink--back" aria-hidden="true">Menu</span>
+      </button>
+
+      <button type="button" id="mc-nav-close" class="mc-textlink mc-textlink--light mc-header--close">
+        <span data-split-text class="mc-textlink--front">Close</span>
+        <span data-split-text class="mc-textlink--back" aria-hidden="true">Close</span>
+      </button>
+    </div>
+
+    <div class="mc-header--brand">
+      <a rel="home" href="https://magneticcreative.com">
+        <div class="mc-header--logo">
+          {{icons.logoName()}}
+        </div>
+        <span class="mc-sr-only">Magnetic Creative</span>
+      </a>
+    </div>
+
+    <div class="mc-header--contact">
+      <a href="https://magneticcreative.com/contact" id="mc-contact-open" class="mc-textlink mc-textlink--light">
+        <span data-split-text class="mc-textlink--front">Contact</span>
+        <span data-split-text class="mc-textlink--back" aria-hidden="true">Contact</span>
+      </a>
+
+      <button type="button" id="mc-contact-close" class="mc-textlink mc-textlink--light mc-header--close">
+        <span data-split-text class="mc-textlink--front">Close</span>
+        <span data-split-text class="mc-textlink--back" aria-hidden="true">Close</span>
+      </button>
+    </div>
+
+  </div>
+</header>
+
+<div id="mc-nav" class="mc-nav">
+  {# Navigation #}
+  <div id="mc-nav-block-menu" class="mc-nav--block mc-nav--block-menu">
+    <div class="mc-inner">
+
+      <div class="mc-nav--layout">
+
+        <nav class="mc-nav--menu" role="navigation">
+          <ul id="mc-nav-list" class="mc-nav--menu-list">
+            {% for item in widget_data.global_site_settings.header_footer.menu %}
+            {% set active = item.menu_item_link.url.href == absolute_url %}
+            {% set classname = 'is-active' if active else '' %}
+            {% set dataAttr = 'data-cursor-disable' if active else '' %}
+            <li class="mc-nav--menu-item {{classname}}">
+              <a class="mc-nav--menu-anchor" href="{{item.menu_item_link.url.href}}" {{dataAttr}}>
+                <div class="mc-nav--menu-item-count">
+                  <span>0{{loop.index}}</span>
+                </div>
+                <div class="mc-nav--menu-item-label">
+                  <div class="mc-nav--menu-item-front" data-split-text>{{item.menu_item_text}}</div>
+                  <span class="mc-nav--menu-item-underline"></span>
+                </div>
+              </a>
+            </li>
+            {% endfor %}
+          </ul>
+        </nav>
+
+        <div class="mc-nav--cta">
+          <figure class="mc-nav--cta-mark">
+            {{icons.logoMark()}}
+          </figure>
+          <h5 class="mc-heading--sm mc-heading--secondary" data-split-text>
+            {{widget_data.global_site_settings.header_footer.cta_subheading}}
+          </h5>
+          <h2 class="mc-heading--md" data-split-text>
+            {{widget_data.global_site_settings.header_footer.cta_heading}}
+          </h2>
+          <div class="mc-nav--cta-btn">
+            {{elements.button({
+              'text': widget_data.global_site_settings.header_footer.cta_button_text,
+              'href': widget_data.global_site_settings.header_footer.cta_button_link.url.href,
+              'anchor': true,
+            })}}
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+  {# /end Navigation #}
+  
+  {# Contact #}
+  <div id="mc-nav-block-contact" class="mc-nav--block mc-nav--block-contact">
+    <div class="mc-inner">
+      {% include 'mag-hs/partials/contact-intro.html' %}
+    </div>
+  </div>
+  {# /end Contact #}
+
+  <div class="mc-nav--xoutline">
+    <span class="mc-nav--xoutline-svg">{{icons.xOutline()}}</span>
+  </div>
+
+  <div id="mc-nav-bg" class="mc-nav--bg"
+    data-src="https://assets.magneticcreative.com/hubfs/2023-web/nav-overlay-bg.webp"></div>
+</div>

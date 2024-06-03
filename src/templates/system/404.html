@@ -1,0 +1,68 @@
+<!--
+  templateType: error_page
+  isAvailableForNewContent: true
+  label: Magnetic 404
+-->
+
+{% set BODY_CLASS = 'page-error page-404' %}
+{% set pageTitle = "404 | All Who Wander Are Not Lost | Magnetic" %}
+
+{% extends "mag-hs/templates/layouts/smooth-scroll.html" %}
+
+{% block body %}
+<section class="mc-404">
+  <div class="mc-404--liner">
+  <div class="mc-inner mc-inner-lg">
+
+    <div class="mc-404--content">
+      <div class="mc-404--title">
+        <h1 class="mc-heading--xl" data-split-text>404</h1>
+      </div>
+      <div class="mc-404--desc">
+        <h5 class="mc-heading--sm" data-split-text>
+          (Embrace the detours; they often lead to the most beautiful views.)
+        </h5>
+      </div>
+      
+      <div class="mc-404--btns">
+        <ul>
+          <li>
+            {{elements.button({
+              'text': 'Take Me Home',
+              'anchor': true,
+              'href': '/',
+              'variant': 'light'
+            })}}
+          </li>
+          <li>
+            {{elements.button({
+              'text': 'View Our Work',
+              'anchor': true,
+              'href': '/work',
+              'variant': 'light'
+            })}}
+          </li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+  </div>
+
+  <div class="mc-404--mappath">
+    {{elements.mapPath()}}
+  </div>
+
+  <figure class="mc-404--bg" aria-hidden="true">
+    <div id="mc-particles" class="mc-404--particles"></div>
+    <img class="mc-lazy mc-lazy--img" data-src="https://ideas.magneticcreative.com/hubfs/2023-web/space-bg.jpeg" alt="solar background">
+  </figure>
+</section>
+{% endblock body %}
+
+{% block footer %}
+<script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+<script>
+  particlesJS.load('mc-particles', 'https://ideas.magneticcreative.com/hubfs/2023-web/data/particles-space.json');
+</script>
+{% endblock footer %}

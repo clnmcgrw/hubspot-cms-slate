@@ -1,0 +1,30 @@
+<!--
+  templateType: page
+  isAvailableForNewContent: true
+  label: About Us
+!-->
+
+{% set BODY_CLASS = 'about-us' %}
+
+{% do widget_data.update({
+  'page_theme': { 'value': 'dark' }
+}) %}
+
+{% extends "mag-hs/templates/layouts/smooth-scroll.html" %}
+
+{% block head %}
+  {{ require_css(get_asset_url('mag-hs/assets/about.css')) }}
+{% endblock %}
+
+{% block body %}
+  {% module "about_hero" path="/mag-hs/modules/mag-services-hero", label="About Us Hero", has_introduction=false, no_wrapper=true %}
+
+  <div class="mc-flexcolumn">
+  {% widget_container "about_page_content" label="Page Content", no_wrapper=true %}
+  {% end_widget_container %}
+  </div>
+{% endblock body %}
+
+{% block footer %}
+  {{ require_js(get_asset_url('mag-hs/assets/about.js'), { position: 'footer', defer: true, async: true }) }}
+{% endblock %}

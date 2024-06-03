@@ -1,0 +1,13 @@
+<!--
+  templateType: page
+  isAvailableForNewContent: true
+  label: Discuss Project
+!-->
+
+{% set BODY_CLASS = 'discuss-project' %}
+
+{% extends "mag-hs/templates/layouts/smooth-scroll.html" %}
+
+{% block body %}
+  {% module "project_intake_form" path="/mag-hs/modules/mag-discuss-project-form", label="Discuss Project Form", no_wrapper=true %}
+{% endblock body %}

@@ -1,0 +1,54 @@
+<!--
+  templateType: none
+-->
+
+<!doctype html>
+<html lang="{{ html_lang }}" {{ html_lang_dir }} class="no-js">
+  <head>
+    <script>document.documentElement.classList.remove('no-js');</script>
+
+    {% include 'mag-hs/partials/head-common.html' %}
+
+    {{ require_css(get_asset_url('mag-hs/assets/main.css')) }}
+    {% block head %}{% endblock head %}
+  </head>
+
+  {% set themeClassname = 'light' %}
+  {% if widget_data.page_theme %}
+    {% set themeClassname = widget_data.page_theme.value | lower %}
+  {% endif %}
+
+  <body class="{{builtin_body_classes}} {{BODY_CLASS}} theme-{{themeClassname}}">
+    {%- unless EXCLUDE_SITE_HEADER -%}
+    {% include 'mag-hs/partials/global-header.html' %}
+    {%- endunless -%}
+
+    <main id="mc-main" class="mc-main mc-main--{{themeClassname}}" role="main">
+      {% block body %}
+      {% endblock body %}
+
+      <div id="mc-bglines" class="mc-bglines">
+        {% for value in range(5) %}
+        <span class="mc-bglines--line mc-bglines--line-{{value + 1}}"></span>
+        {% endfor %}
+      </div>
+    </main>
+
+    {%- unless EXCLUDE_SITE_FOOTER -%}
+    {% include 'mag-hs/partials/global-footer.html' %}
+    <div id="mc-modal-portal" class="mc-modal-portal"></div>
+    {%- endunless -%}
+
+    {%- unless EXCLUDE_SITE_SCRIPTS -%}
+    {# <script src="https://polyfill.io/v3/polyfill.js?features=Array.from,Array.isArray,Array.prototype.fill,Array.prototype.filter,Array.prototype.find,Array.prototype.flat,Array.prototype.forEach,Array.prototype.includes,Array.prototype.indexOf,Array.prototype.keys,Array.prototype.lastIndexOf,Array.prototype.map,Array.prototype.reduce,Array.prototype.some,Array.prototype.sort,Array.prototype.values,ArrayBuffer,ArrayBuffer.isView,console,CustomEvent,DataView,Date.now,document,Event,Function.prototype.bind,getComputedStyle,innerHeight,innerWidth,IntersectionObserver,JSON,Map,Math.sign,MutationObserver,Number.isNaN,Object.assign,Object.create,Object.defineProperties,Object.defineProperty,Object.getOwnPropertyDescriptor,Object.getOwnPropertyDescriptors,Object.getOwnPropertySymbols,Object.getPrototypeOf,Object.keys,Object.setPrototypeOf,Promise,requestAnimationFrame,ResizeObserver,Set,String.prototype.includes,String.prototype.normalize,String.prototype.repeat,String.prototype.trim,Symbol,Symbol.iterator,Symbol.toPrimitive,WeakMap,WeakSet"></script> #}
+    {{ require_js(get_asset_url('mag-hs/assets/main.js'), { position: 'footer', defer: true, async: true }) }}
+    {%- endunless -%}
+
+    {{ standard_footer_includes }}
+
+    {% block footer %}{% endblock footer %}
+
+    {% include 'mag-hs/partials/schema-json.html' %}
+    {% include 'mag-hs/partials/tracking-scripts.html' %}
+  </body>
+</html>

@@ -1,0 +1,30 @@
+<!--
+  templateType: page
+  isAvailableForNewContent: true
+  label: Services Single
+!-->
+
+{% import "mag-hs/partials/brand-story-data.html" %}
+{% import "mag-hs/macros/utilities.html" as utils %}
+
+{% set serviceCategoryOptions = [] %}
+{% for row in brandStoryServiceCategories %}
+  {% do serviceCategoryOptions.append([utils.slugify(row.name), row.name]) %}
+{% endfor %}
+
+{% choice "service_category" label="Select a Service", value="brand-intelligence", choices="{{serviceCategoryOptions}}", no_wrapper=true, export_to_template_context=true %}
+
+{% set BODY_CLASS = 'services-single ' ~ widget_data.service_category.value %}
+
+{% extends "mag-hs/templates/layouts/smooth-scroll.html" %}
+
+{% block body %}
+  {% module "services_hero" path="/mag-hs/modules/mag-services-hero", label="Services Hero", has_introduction=true, no_wrapper=true %}
+
+  <div id="start" class="mc-flexcolumn">
+  {% widget_container "services_page_content" label="Page Content", no_wrapper=true %}
+  {% end_widget_container %}
+  </div>
+
+  {% include "mag-hs/partials/services-next.html" %}
+{% endblock body %}

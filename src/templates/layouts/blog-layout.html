@@ -1,0 +1,57 @@
+<!--
+  templateType: none
+-->
+
+{% include '/mag-hs/macros/blog/blog-sticky-bar.html' %}
+{% include '/mag-hs/macros/blog/blog-sidebar.html' %}
+{% include '/mag-hs/macros/blog/svg-magnetic.html' %}
+{% include '/mag-hs/macros/blog/svg-magnetic-compact.html' %}
+
+{% set is_page_editor_view = request.postDict.inpageEditorUI %}
+{% set template_class = is_listing_view ? 'mag-blog-listing' : 'mag-blog-single' %}
+{% set editor_class = is_page_editor_view ? 'is-page-editor' : '' %}
+
+{% set IS_DEV_ENV = portal_id == 2661418 %}
+{% set blog_id = 145368799153 if IS_DEV_ENV else 4127286989 %}
+{% set careers_body_class = 'careers' if blog.id == blog_id else '' %}
+{% set archive_body_class = 'archive' if blog_author or topic else '' %}
+
+<!DOCTYPE html>
+<html lang="{{ html_lang }}" {{ html_lang_dir }} class="no-js">
+  <head>
+    <script>document.documentElement.classList.remove('no-js');</script>
+
+    {% include 'mag-hs/partials/head-common.html' %}
+    
+    {{ require_css(get_asset_url('mag-hs/assets/blog.css')) }}
+    {{ require_css(get_asset_url('mag-hs/assets/main.css')) }}
+    
+    {% block head %}{% endblock head %}
+  </head>
+
+  <body class="{{builtin_body_classes}} {{BODY_CLASS}} {{template_class}} {{editor_class}} {{careers_body_class}} {{archive_body_class}}">
+    {%- unless EXCLUDE_SITE_HEADER -%}
+      {% include 'mag-hs/partials/global-header.html' %}
+    {%- endunless -%}
+
+    <main id="mc-main" class="mc-main" role="main">
+      {% block body %}
+      {% endblock body %}
+    </main>
+
+    {%- unless EXCLUDE_SITE_FOOTER -%}
+    {% include 'mag-hs/partials/global-footer.html' %}
+    <div id="mc-modal-portal" class="mc-modal-portal"></div>
+    {%- endunless -%}
+
+    {%- unless EXCLUDE_SITE_SCRIPTS -%}
+    <script src="https://polyfill.io/v3/polyfill.js?features=Array.from,Array.isArray,Array.prototype.fill,Array.prototype.filter,Array.prototype.find,Array.prototype.flat,Array.prototype.forEach,Array.prototype.includes,Array.prototype.indexOf,Array.prototype.keys,Array.prototype.lastIndexOf,Array.prototype.map,Array.prototype.reduce,Array.prototype.some,Array.prototype.sort,Array.prototype.values,ArrayBuffer,ArrayBuffer.isView,console,CustomEvent,DataView,Date.now,document,Event,Function.prototype.bind,getComputedStyle,innerHeight,innerWidth,IntersectionObserver,JSON,Map,Math.sign,MutationObserver,Number.isNaN,Object.assign,Object.create,Object.defineProperties,Object.defineProperty,Object.getOwnPropertyDescriptor,Object.getOwnPropertyDescriptors,Object.getOwnPropertySymbols,Object.getPrototypeOf,Object.keys,Object.setPrototypeOf,Promise,requestAnimationFrame,ResizeObserver,Set,String.prototype.includes,String.prototype.normalize,String.prototype.repeat,String.prototype.trim,Symbol,Symbol.iterator,Symbol.toPrimitive,WeakMap,WeakSet"></script>
+    {{ require_js(get_asset_url('mag-hs/assets/main.js'), { position: 'footer', defer: true, async: true }) }}
+    {{ require_js(get_asset_url('mag-hs/assets/blog.js'), { position: 'footer', defer: true, async: true }) }}
+    {%- endunless -%}
+
+    {{ standard_footer_includes }}
+
+    {% block footer %}{% endblock footer %}
+  </body>
+</html>

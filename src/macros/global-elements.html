@@ -1,0 +1,262 @@
+{% import "mag-hs/macros/utilities.html" as utils %}
+{% import "mag-hs/macros/icons.html" as icons %}
+
+{# Button #}
+{% macro button(options) %}
+  {% set text = options.text || 'Learn More' %}
+  {% set anchor = options.anchor || false %}
+  {% set type = options.type || 'button' %}
+  {% set href = options.href || '#0' %}
+  {% set id = options.id || false %}
+  {% set className = options.className || '' %}
+  {% set variant = options.variant || 'default' %}
+  {% set size = options.size || 'md' %}
+  {% set arrow = options.arrow || false %}
+  {% set dataAttrs = options.dataAttrs || {} %}
+  {% set customAttrs = options.attributes || '' %}
+  
+  {% set baseClass = 'mc-btn' %}
+  {% set attributes = 'class="{{baseClass}} {{baseClass}}--{{variant}} {{baseClass}}--{{size}}"'%}
+  {% if id %}
+    {% set attributes = 'id="{{id}}" ' + attributes %}
+  {% endif %}
+  {% if arrow %}
+    {% set attributes = 'data-arrow="true" ' + attributes %}
+  {% endif %}
+
+  {% if anchor %}
+    <a href="{{href}}" {{attributes}} {{customAttrs}}>
+      <span class="{{baseClass}}--text {{baseClass}}--front" data-split-text>{{text}}</span>
+      <span class="{{baseClass}}--text {{baseClass}}--back" data-split-text>{{text}}</span>
+      {%- if arrow -%}
+      <span class="{{baseClass}}--arr" aria-hidden="true">{{icons.arrowLongRight()}}</span>
+      {%- endif -%}
+      <span class="{{baseClass}}--bg"><span></span></span>
+    </a>
+  {% else %}
+    <button type="{{type}}" {{attributes}} {{customAttrs}}>
+      <span class="{{baseClass}}--text {{baseClass}}--front" data-split-text>{{text}}</span>
+      <span class="{{baseClass}}--text {{baseClass}}--back" data-split-text>{{text}}</span>
+      {%- if arrow -%}
+      <span class="{{baseClass}}--arr" aria-hidden="true">{{icons.arrowLongRight()}}</span>
+      {%- endif -%}
+      <span class="{{baseClass}}--bg"><span></span></span>
+    </button>
+  {% endif %}
+{% endmacro %}
+
+
+{# Text Link #}
+{% macro textLink(options) %}
+  {% set text = options.text || 'Learn More' %}
+  {% set anchor = options.anchor || false %}
+  {% set href = options.href || '#0' %}
+  {% set id = options.id || false %}
+  {% set type = options.type || 'button' %}
+  {% set variant = options.variant || 'default' %}
+  {% set size = options.size || 'md' %}
+
+  {% set baseClass = 'mc-textlink' %}
+  {% set attributes = 'class="{{baseClass}} {{baseClass}}--{{variant}} {{baseClass}}--{{size}}"'%}
+  {% if id %}
+    {% set attributes = 'id="{{id}}" ' + attributes %}
+  {% endif %}
+  
+  {% if anchor %}
+  <a href="{{href}}" {{attributes}}>
+    <span data-split-text class="mc-textlink--front">{{text}}</span>
+    <span data-split-text class="mc-textlink--back" aria-hidden="true">{{text}}</span>
+  </a>
+  {% else %}
+  <button type="{{type}}" {{attributes}}>
+    <span data-split-text class="mc-textlink--front">{{text}}</span>
+    <span data-split-text class="mc-textlink--back" aria-hidden="true">{{text}}</span>
+  </button>
+  {% endif %}
+{% endmacro %}
+
+
+{# Rich Text Wrapper #}
+{% macro rte(options) %}
+  <div class="mc-rte">
+  {{caller()}}
+  </div>
+{% endmacro %}
+
+
+{% macro mapPath(colorTheme, showText, text, hasX) %}
+  {% set colorTheme = colorTheme || 'light' %}
+  {% set textContent = text || 'A Global Branding Agency' %}
+  <div class="mc-mappath mc-mappath--{{colorTheme}}">
+    <div class="mc-mappath--svg">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1826.26 393.31">
+        <path class="mc-mappath--line" stroke-dashoffset="600" d="M1826.26,0l-.83,2.42c-4.91,2.7-9.88,5.18-14.75,7.48-7.28,3.45-14.64,6.13-21.76,8.72-14.44,5.27-28.08,10.24-40.66,21-6.29,5.39-9.53,11.74-13,18.48A84.51,84.51,0,0,1,1727,72c-4.58,5.88-10.48,10.12-16.17,14.21a110.71,110.71,0,0,0-10.69,8.36c-10.57,9.74-12.32,21.66-14.15,34.31-1.68,11.53-3.43,23.47-12.59,33.27-16.11,17.24-38,21.95-59.18,26.51-5.33,1.15-10.83,2.34-16.15,3.71-21.79,5.61-20.15,15.08-17.9,28.2,1.28,7.37,2.7,15.71.09,24.7-5.78,19.79-26.73,20.53-47,21.26-8.52.3-16.58.58-23.45,2.22-33.23,8-69.53,52.45-96,84.9-20,24.43-34.38,42.08-42.12,39.42-4.23-1.76-7-4.51-8.16-8.18-3.77-11.67,8.18-31,20.82-51.47,15.59-25.25,31.7-51.34,17.69-62.72-5-4.06-9.91-5.64-15-4.86-13.35,2-25.35,20.1-35.93,36-1.13,1.72-2.26,3.43-3.37,5.06-11,16.32-25.44,27.22-41.86,31.56-14,3.68-23.87,1.74-29.4-5.81-11.91-16.25.65-53.8,11-70.24a49.77,49.77,0,0,1,5.36-6.62c4-4.39,7.83-8.54,7.17-15.6-.54-5.62-2.35-9.24-5.39-10.75-7.57-3.75-22,5.19-33.55,12.38-6.5,4-12.12,7.53-15.72,8.35-23.77,5.33-46.82-8-67.15-19.81-5.07-3-9.85-5.72-14.58-8.19-15.59-8.14-32.35-12.56-48.54-16.84-13.79-3.64-28-7.4-41.68-13.44-3.23-1.44-6.61-2.83-10.2-4.3-11.36-4.66-24.21-10-33.3-17.26-4.16-3.37-7.64-8.16-11-12.8-5.4-7.44-11-15.13-19.6-17.31-11.75-2.91-23.18,5-33.25,12-2.42,1.69-4.73,3.3-7,4.68-14.4,9-26.63,12.11-42.33,15.48-13.45,2.9-27.17,2.87-40.45,2.83-14.48,0-29.46-.06-43.88,3.76a159,159,0,0,1-46,4.71c-6.17-.26-12.46-.69-18.56-1.12l-5.41-.37c-15.19-1-30.3-3.1-44.92-5.13-4.29-.59-8.61-1.19-12.94-1.76-5.91-.78-11.83-1.5-17.74-2.21-14.9-1.79-30.32-3.64-45.31-6.66l-3.73-.76c-17-3.43-33-6.66-50-7.34-2.88-.1-5.86-.08-9,0-7.56.07-15.37.15-22.36-1.73-5-1.35-10.09-2.91-15-4.41-12.22-3.76-24.85-7.65-38-8.47-11.34-.7-22.95.56-34.16,1.8-2.53.27-5.06.55-7.56.79-5.16.52-10.32,1-15.48,1.45-9.12.82-18.54,1.66-27.8,2.83-18,2.25-25.86.44-42-6.59-23.78-10.34-48.72-15.68-76.5-21.11-5.07-1-10.08-1.71-14.91-2.4-9.59-1.35-18.66-2.64-28.26-5.94h0a240.16,240.16,0,0,0-53.5-11.73c-9.55-1-16.37-.79-23.55.64-1.69.34-3.34.75-5,1.15-5.57,1.33-11.31,2.72-17.27,1.57-5.18-1-10.08-3.53-14.81-6-2.28-1.18-4.66-2.4-7-3.39a105.16,105.16,0,0,0-17.26-5.19C115,90.78,111.59,90,108.25,89c-9.65-2.9-19.72-3.06-29.45-3.19-7.41-.11-15.06-.23-22.57-1.53A54.42,54.42,0,0,1,47.82,82c-4.23-1.46-8.29-3.3-12.26-5.11-1.82-.81-3.63-1.63-5.45-2.42-7.59-3.28-15.69-6-23.52-8.57-2.2-.74-4.4-1.46-6.59-2.21L.55,62.1c2.18.75,4.37,1.47,6.57,2.21,7.87,2.63,16,5.31,23.67,8.62,1.83.79,3.65,1.61,5.47,2.43,6.44,2.94,13.11,6,20.26,7.2,7.37,1.27,15,1.39,22.31,1.5,9.85.13,20,.28,29.91,3.25,3.29,1,6.72,1.81,10,2.61a108.51,108.51,0,0,1,17.53,5.28c2.36,1,4.75,2.25,7.06,3.44,4.64,2.41,9.44,4.88,14.36,5.83,5.59,1.08,10.92-.2,16.54-1.54,1.69-.42,3.39-.83,5.09-1.16,9.11-1.83,16.94-1.4,24-.67a241.18,241.18,0,0,1,53.88,11.8h0c9.45,3.25,18.43,4.53,27.93,5.86,4.87.7,9.88,1.41,15,2.41,27.88,5.45,52.93,10.81,76.86,21.23,15.77,6.87,23.5,8.66,41.07,6.45,9.28-1.16,18.74-2,27.86-2.82,5.16-.47,10.31-.93,15.45-1.44q3.76-.39,7.55-.82c11.28-1.22,23-2.5,34.46-1.78,13.33.81,26.06,4.73,38.37,8.53,4.87,1.49,9.91,3.05,14.92,4.39,6.75,1.81,14.45,1.73,21.89,1.67,3.19,0,6.21-.07,9.11,0,17.17.69,33.27,3.94,50.3,7.37l3.74.77c14.92,3,30.3,4.86,45.17,6.64,5.93.71,11.84,1.42,17.76,2.21,4.35.57,8.65,1.17,13,1.76,15.26,2.12,29.66,4.11,44.8,5.11l5.41.38c6.08.41,12.37.86,18.51,1.11A157.63,157.63,0,0,0,832,177.34c14.63-3.89,29.72-3.84,44.32-3.81,13.19,0,26.83.08,40.1-2.78,15.53-3.36,27.61-6.41,41.76-15.26,2.2-1.37,4.49-3,6.9-4.65,10.37-7.21,22.13-15.38,34.62-12.26,9.19,2.3,15,10.25,20.59,17.95,3.45,4.76,6.71,9.25,10.69,12.46,8.9,7.15,21.64,12.4,32.88,17,3.6,1.49,7,2.88,10.23,4.31,13.53,6,27.71,9.74,41.42,13.35,16.29,4.32,33.15,8.76,48.91,17,4.76,2.49,9.56,5.28,14.64,8.23,20.06,11.62,42.81,24.8,65.93,19.61,3.33-.74,8.83-4.17,15.2-8.11,11.93-7.42,26.76-16.66,35.2-12.46,3.6,1.77,5.73,5.86,6.33,12.11.74,7.81-3.5,12.44-7.6,16.91a45.75,45.75,0,0,0-5.17,6.38c-10.17,16.1-22.56,52.7-11.1,68.32,5.07,6.93,14.35,8.66,27.58,5.16,16-4.21,30.14-14.87,40.88-30.85,1.11-1.64,2.23-3.33,3.38-5.05,10.77-16.23,23-34.63,37.09-36.78,5.54-.84,11,.9,16.35,5.22,15.19,12.33-1.34,39.08-17.32,65-12.41,20.12-24.16,39.13-20.64,50,1,3.23,3.38,5.55,7.14,7.11,6.57,2.26,22.16-16.81,40.2-38.91,26.66-32.62,63.17-77.33,97-85.45,7-1.71,15.15-2,23.77-2.3,19.66-.7,40-1.41,45.41-20,2.5-8.6,1.11-16.73-.12-23.92-2.24-13-4.17-24.15,19.15-30.15,5.35-1.38,10.88-2.56,16.22-3.71,20.9-4.51,42.54-9.18,58.28-26,8.8-9.42,10.5-21.08,12.15-32.37,1.8-12.37,3.67-25.17,14.69-35.32a114.54,114.54,0,0,1,10.85-8.48c5.59-4,11.38-8.18,15.8-13.86a81.68,81.68,0,0,0,8.12-13.59c3.35-6.59,6.82-13.39,13.39-19,12.81-11,26.59-16,41.17-21.33,7.1-2.58,14.42-5.24,21.62-8.65C1815.34,5.81,1820.86,3.05,1826.26,0Z"></path>
+        {% unless hasX == false %}
+        <polygon class="mc-mappath--x" points="932.82 161.89 924.08 153.16 912.67 164.58 901.25 153.16 892.52 161.89 903.93 173.31 892.52 184.73 901.25 193.46 912.67 182.04 924.08 193.46 932.82 184.73 921.4 173.31 932.82 161.89"></polygon>
+        {% endunless %}
+      </svg>
+    </div>
+    {% if showText %}
+    <div class="mc-mappath--text">
+      <h5>{{textContent}}</h5>
+    </div>
+    {% endif %}
+  </div>
+{% endmacro %}
+
+
+{% macro spacer(vw, min, max) %}
+  {% set minHeight = min || '90' %}
+  {% set maxHeight = max || '190' %}
+  {% set vHeight = vw || '12vw' %}
+  {% set inlineStyles = 'min-height:' + minHeight + 'px; max-height:' + maxHeight + 'px; height:' + vHeight + 'vw;' %}
+  {% set styleAttributes = 'style="' + inlineStyles + '"' %}
+  <div class="mc-spacer" {{styleAttributes}}></div>
+{% endmacro %}
+
+
+{% macro moduleSpacer(padding, location) %}
+  {% set key = location || 'top' %}
+  {% if padding[location] %}
+    {% set min = padding[location + '_min'] %}
+    {% set max = padding[location + '_max'] %}
+    {% set amount = padding[location + '_amount'] %}
+    {{spacer(amount, min, max)}}
+  {% endif %}
+{% endmacro %}
+
+
+{% macro lazyImage(opts, hasCaller) %}
+  {% set classnames = opts.classnames || '' %}
+  {% set styles = opts.styles || '' %}
+  {% set sizes = opts.sizes || 'auto' %}
+  {% set mobileWidth = opts.mobileWidth || 750 %}
+  {% set mobileImage = opts.mobileImage || false %}
+  <figure class="mc-lazy--parent {{classnames}}" {{utils.paddingBottomStyle(opts.image, styles)}}>
+    <img class="mc-lazy mc-lazy--img" data-src="{{opts.image.src}}"
+      data-srcset="{{utils.getSrcSet(opts.image, mobileImage, mobileWidth)}}" sizes="{{sizes}}" alt="{{opts.image.alt}}" />
+    {{utils.getLQIP(opts.image.src, opts.image.alt)}}
+    {%- if hasCaller -%}
+      {{caller()}}
+    {%- endif -%}
+  </figure>
+{% endmacro %}
+
+
+{% macro brandStoryGridItem(item) %}
+<div class="mc-bs-item mc-bs-item--{{item.size}}"
+  data-industry="{{utils.slugify(item.industry)}}">
+
+  <a class="mc-bs-item--anchor" href="{{item.url}}">
+    <span class="mc-sr-only">View the {{item.name}} case study</span>
+  </a>
+
+  <div class="atropos mc-bs-item--figure">
+    <div class="atropos-scale">
+      <div class="atropos-rotate">
+        <div class="atropos-inner">
+        {{lazyImage({'classnames': 'mc-bs-item--img', 'image': item.image})}}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <figcaption class="mc-bs-item--caption">
+    <div class="mc-bs-item--count">
+      <p>No. {{utils.twoDigitMinimum(item.index)}}</p>
+    </div>
+    <div class="mc-bs-item--title">
+      <h3>{{item.name}}</h3>
+    </div>
+    <div class="mc-bs-item--view">
+      <div class="mc-bs-item--view-link">
+        <span class="mc-bs-item--blinker">
+          <span class="mc-bs-item--blinker-active"></span>
+          <span class="mc-bs-item--blinker-bg"></span>
+        </span>
+        {{textLink({ 'text': 'View' })}}
+      </div>
+    </div>
+  </figcaption>
+
+</div>
+{% endmacro %}
+
+
+{% macro nextPageLink(opts) %}
+  {% set subtitle = opts.subtitle || false %}
+  {% set title = opts.title || false %}
+  {% set href = opts.href || '#0' %}
+  {% set screenReader = opts.screenReader || title %}
+  {% set size = opts.size || 'xl' %}
+  <div class="mc-nextlink--content mc-nextstory--content">
+    {% if subtitle %}
+    <h5 class="mc-heading--sm mc-heading--secondary">{{subtitle}}</h5>
+    {% endif %}
+    <h2 class="mc-heading--{{size}}">
+      <span class="mc-heading--lg-text" data-split-text>{{opts.title}}</span>
+      <span class="mc-nextlink--underline"></span>
+    </h2>
+    <a href="{{href}}">
+      <span class="mc-sr-only">{{opts.screenReader}}</span>
+    </a>
+  </div>
+{% endmacro %}
+
+{% macro nextPageSection(image) %}
+<section id="mc-next-link" class="mc-nextlink mc-nextstory">
+  <div class="mc-nextstory--graphic">
+    {{mapPath('dark', false)}}
+  </div>
+  <div class="mc-nextstory--content">
+    <div class="mc-inner mc-inner-md">
+      {{caller()}}
+    </div>
+  </div>
+  {% if image %}
+  <div id="mc-next-link-img" class="mc-nextlink--img">
+    <div class="mc-nextlink--img-liner">
+      <figure data-efx-img="{{image.src}}"
+        data-efx-img-size="{{image.width}}X{{image.height}}"></figure>
+    </div>
+  </div>
+  {% endif %}
+</section>
+{% endmacro %}
+
+
+{% macro displayText(text, classname, h1) %}
+  {% set tag = 'h1' if h1 else 'h2' %}
+  {% set lines = text | split(' ') %}
+  <{{tag}} class="mc-displaytext {{classname}}">
+    {% for line in lines %}
+    <span class="mc-displaytext--line-{{loop.index}}">{{line}}</span>
+    {% endfor %}
+  </{{tag}}>
+{% endmacro %}
+
+
+{% macro videoPlayButton(size) %}
+{% set btnSize = size || 'small' %}
+<div class="mc-playicon mc-playicon--{{btnSize}}">
+  {{icons.play()}}
+</div>
+{% endmacro %}
+
+{# mc-vidreel-topbar id / vidreel classname #}
+{% macro videoCloseBar(options) %}
+  {% set closeId = options.id + '-close' %}
+  {% set classnameSegment = options.classname || 'player' %}
+  {% set theme = options.theme || 'default' %}
+  <div id="{{options.id}}" class="mc-vid-bar mc-vid-bar--{{theme}} mc-{{classnameSegment}}--bar">
+    <div class="mc-vid-bar--title mc-{{classnameSegment}}--bar-title">
+      <h5>{{options.title}}</h5>
+    </div>
+    <div class="mc-vid-bar--close mc-vidreel--close">
+      <button id="{{closeId}}" type="button" class="mc-btn--close">
+        {{icons.close()}}
+        <span class="mc-sr-only">Close Video</span>
+      </button>
+    </div>
+  </div>
+{% endmacro %}

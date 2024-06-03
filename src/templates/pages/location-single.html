@@ -1,0 +1,40 @@
+<!--
+  templateType: page
+  isAvailableForNewContent: true
+  label: Location Single
+!-->
+
+{% set BODY_CLASS = 'location-single' %}
+
+{% import "mag-hs/partials/about-page-data.html" %}
+{% import "mag-hs/macros/utilities.html" as utils %}
+
+{% set locationOptions = [] %}
+{% for row in officeLocationData %}
+  {% do locationOptions.append([utils.slugify(row.name), row.name]) %}
+{% endfor %}
+
+{% choice "office_location" label="Select Office Location", choices="{{locationOptions}}", no_wrapper=true, export_to_template_context=true %}
+
+{% set BODY_CLASS = 'location-single location-' ~ widget_data.office_location.value %}
+
+{% set currentOfficeLocation = [] %}
+{% for location in officeLocationData %}
+  {% if utils.slugify(location.name) == widget_data.office_location.value %}
+    {% do currentOfficeLocation.append(location) %}
+  {% endif %}
+{% endfor %}
+{% set currentOfficeLocation = currentOfficeLocation[0] %}
+
+{% extends "mag-hs/templates/layouts/smooth-scroll.html" %}
+
+{% block body %}
+  {% module "location_hero" path="/mag-hs/modules/mag-location-hero", label="Location Hero", no_wrapper=true %}
+
+  <div class="mc-flexcolumn" id="start">
+  {% widget_container "location_page_content" label="Page Content", no_wrapper=true %}
+  {% end_widget_container %}
+  </div>
+
+  {% include "mag-hs/partials/location-next.html" %}
+{% endblock body %}

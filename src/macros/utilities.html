@@ -1,0 +1,60 @@
+{% import 'mag-hs/partials/settings.html' %}
+
+{% macro paddingBottomStyle(image, styles) %}
+  {% set addedStyles = styles if styles else '' %}
+  {% set imageSize = (image.height / image.width) * 100 %}
+  style="padding-bottom:{{imageSize | round(0.1, 'ceil')}}%;{{addedStyles}}"
+{% endmacro %}
+
+{% macro getSrcSet(default, mobile, widthMobile) %}
+  {%- set defaultMobileWidth = widthMobile if widthMobile else 750 -%}
+  {%- set mobileSrc = resize_image_url(default.src, defaultMobileWidth) -%}
+  {%- if mobile -%}
+    {%- set mobileSrc = mobile.src -%}
+  {%- endif -%}
+  {%- set mobileWidth = mobile.width if mobile else defaultMobileWidth -%}
+  {{mobileSrc}} {{mobileWidth | round}}w, {{default.src}} {{default.width}}w
+{% endmacro %}
+
+{% macro getLQIP(src, alt) %}
+  <img class="mc-lazy--placeholder" src="{{resize_image_url(src, 36)}}" alt="{{alt}}" />
+{% endmacro %}
+
+{% macro twoDigitMinimum(value) %}
+  {{('0' + value) if value < 10 else value }}
+{% endmacro %}
+
+{% macro slugify(value) %}
+  {%- set returnValue = [] -%}
+  {%- if value is sequence -%}
+    {% for val in value %}
+      {%- set replacedValue = val | trim | lower | replace("&", "") | replace(" ", "-") | replace("(", "") | replace(")", "") -%}
+      {%- do returnValue.append(replacedValue) -%}
+    {%- endfor -%}
+    {{returnValue | join(', ')}}
+  {%- else -%}
+    {%- set replacedValue = value | trim | lower | replace("&", "") | replace(" ", "-") | replace("(", "") | replace(")", "") -%}
+    {{replacedValue}}
+  {%- endif -%}
+{% endmacro %}  
+
+{% macro doBrandStoryNumber(name, allStories) %}
+  {% set count = [] %}
+  {% for story in allStories %}
+    {% if story.name == name %}
+      {% do count.append(loop.index) %}
+    {% endif %}
+  {% endfor %}
+  <span class="mc-count-label">No. {{twoDigitMinimum(count[0])}}</span>
+{% endmacro %}
+
+{%- macro getStoryCount(filterCategory, filterItem, allStories) -%}
+  {%- set results = [] -%}
+  {%- for story in allStories -%}
+    {%- set filterString = story[filterCategory] | join(' ') -%}
+    {%- if filterString is string_containing filterItem -%}
+      {%- do results.append(story.name) -%}
+    {%- endif -%}
+  {%- endfor -%}
+  {{results | length}}
+{%- endmacro -%}

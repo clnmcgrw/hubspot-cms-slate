@@ -1,0 +1,31 @@
+{% import 'mag-hs/macros/global-elements.html' as elements %}
+{% import "mag-hs/partials/brand-story-data.html" %}
+
+{% set matchingPageIds = [] %}
+{% for category in brandStoryServiceCategories %}
+  {% if category.page_id %}
+    {% do matchingPageIds.append(category.page_id) %}
+  {% endif %}
+{% endfor %}
+
+{% set matchingPageContent = content_by_ids(matchingPageIds) %}
+
+{% call elements.nextPageSection(false) %}
+  <h5 class="mc-heading--sm mc-heading--secondary">Explore Our Services</h5>
+  <ul class="mc-nextlink--list">
+  {% for category in brandStoryServiceCategories %}
+    {% set matchingPage = matchingPageContent[category.page_id] %}
+    {% set isServicesListing = BODY_CLASS == 'services-listing' %}
+    {% set isCurrentPage = matchingPage.absolute_url is string_containing slug %}
+    {% set listItemClass = 'is-current-page' if (isCurrentPage and !isServicesListing) else '' %}
+    <li class="{{listItemClass}}">
+      <span class="mc-nextlink--count">0{{loop.index}}</span>
+      {{elements.nextPageLink({
+        'title': category.name,
+        'href': matchingPage.absolute_url,
+        'screenReader': 'Learn more about ' ~ category.name
+      })}}
+    </li>
+  {% endfor %}
+  </ul>
+{% endcall %}
